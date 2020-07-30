@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Console_Game
 {
     public class Player : Character
     {
-        public Queue<int> PlayerHits { get; private set; } = new Queue<int>();
+        public List<int> PlayerHits { get; private set; } = new List<int>();
+        public List<int> RandomSuperHit { get; private set; } = new List<int>();
         public int ChoiceToHit { get; private set; }
+
 
         public void PressButtonToHit()
         {
@@ -17,6 +20,7 @@ namespace Console_Game
 
             while (true)
             {
+                ShowOrderForSuperHit();
                 ShowButtonToHit();
                 playerChoice = Console.ReadLine();
                 if (IsValidString(playerChoice) && attempt > 0)
@@ -42,12 +46,19 @@ namespace Console_Game
                 Console.WriteLine("> 1 - для удара в голову.");
                 Console.WriteLine("> 2 - для удара в тело.");
                 Console.WriteLine("> 3 - для удара в ноги.");
+                if(MatchSuperHits())
+                    Console.WriteLine(">> 4 - ДЛЯ СУПЕР УДАРА");
+            }
+
+            void ShowOrderForSuperHit()
+            {
+                Console.WriteLine($"Порядок ударов для СУПЕР удара: {RandomSuperHit[0]}, {RandomSuperHit[1]}, {RandomSuperHit[2]}\n");
             }
         }
 
         private void RecordPlayerHit(int hit)
         {
-            PlayerHits.Enqueue(hit);
+            PlayerHits.Add(hit);
         }
 
         private int ConvertStrToInt(string str)
@@ -66,16 +77,50 @@ namespace Console_Game
                 return false;
             if (!IsDigit(str))
                 return false;
-            if (str != "1" && str != "2" && str != "3")
-                return false;
+            if (PlayerHits.Count < 3 && !IsStandartChoiceToHit(str))
+                    return false;
+
+            if (PlayerHits.Count > 3 )
+            {
+                if (IsStandartChoiceToHit(str) || str != "4")
+                {
+                    return false;
+                }
+            }
 
             return true;
+        }
+
+        private bool IsStandartChoiceToHit(string str)
+        {
+            if (str == "1")
+                return true;
+            if (str == "2")
+                return true;
+            if (str == "3")
+                return true;
+
+            return false;
+        }
+        public void GenerateSuperHit()
+        {
+            var random = new Random();
+
+            for (int i = 0; i < 3; i++)
+            {
+                RandomSuperHit.Add(random.Next(1, 4));
+            }
         }
 
         public void EnterUserName()
         {
             Console.Write("Введи свое имя рыцарь: ");
             Name = Console.ReadLine();
+        }
+
+        private bool MatchSuperHits()
+        {
+            return PlayerHits.SequenceEqual(RandomSuperHit);
         }
     }
 }

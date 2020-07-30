@@ -7,7 +7,7 @@ namespace Console_Game
     public class Character
     {
         public string Name { get; set; }
-        public int Healt { get; set; } = 200;
+        public int Healt { get; set; } = 350;
         public int Damage { get; private set; } = 0;
 
         public void GetHit(int damage)
@@ -41,13 +41,16 @@ namespace Console_Game
             switch (playerChoice)
             {
                 case 1:
-                    range = 83;
+                    range = 80;
                     break;
                 case 2:
-                    range = 91;
+                    range = 85;
                     break;
                 case 3:
-                    range = 100;
+                    range = 90;
+                    break;
+                case 4:
+                    range = 150;
                     break;
                 default:
                     range = 70;
@@ -55,12 +58,12 @@ namespace Console_Game
             }
 
             Random random = new Random();
-            Damage = random.Next(60, range);
+            Damage = random.Next(70, range);
         }
 
         public void ShowBattleReport(string userName, string botName, int healt, int damage)
         {
-            Console.WriteLine($"{userName} нанес {damage} урона {botName}. \nУ {botName} осталось {healt} ХПы\n");
+            Console.WriteLine($"{userName} нанес {damage} урона {botName}. У {botName} осталось [ {healt} ] хп\n");
         }
     }
 }

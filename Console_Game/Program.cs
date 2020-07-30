@@ -12,6 +12,7 @@ namespace Console_Game
 
             Player player = new Player();
             player.EnterUserName();
+            player.GenerateSuperHit();
 
 
             while (true)
@@ -30,7 +31,7 @@ namespace Console_Game
                 if (enemy.IsDeath(enemy.Name))
                     break;
 
-                await Task.Delay(1500);
+                await Task.Delay(1000);
 
                 //===========================================================================================>
                 //----> Враг бьет героя.
@@ -39,6 +40,7 @@ namespace Console_Game
                 player.ShowBattleReport(enemy.Name, player.Name, player.Healt, enemy.Damage);
                 if (player.IsDeath(player.Name))
                     break;
+                Console.WriteLine("==============================================");
             }
         }
     }
