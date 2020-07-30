@@ -32,7 +32,7 @@ namespace Console_Game
         public void GenerateRandomDamage()
         {
             Random random = new Random();
-            Damage = random.Next(100);
+            Damage = random.Next(80, 100);
         }
 
         public void GenerateRandomDamage(int playerChoice)
@@ -58,9 +58,9 @@ namespace Console_Game
             Damage = random.Next(60, range);
         }
 
-        public void ShowBattleReport(string name, int healt, int damage)
+        public void ShowBattleReport(string userName, string botName, int healt, int damage)
         {
-            Console.WriteLine($"{name} получил {damage} урона. \nОсталось {healt} ХП\n");
+            Console.WriteLine($"{userName} нанес {damage} урона {botName}. \nУ {botName} осталось {healt} ХПы\n");
         }
     }
 }

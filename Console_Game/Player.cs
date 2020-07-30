@@ -7,8 +7,9 @@ namespace Console_Game
     public class Player : Character
     {
         public Queue<int> PlayerHits { get; private set; } = new Queue<int>();
+        public int ChoiceToHit { get; private set; }
 
-        public int PressButtonToHit()
+        public void PressButtonToHit()
         {
             string playerChoice = "";
             int playerChoiceConvertedToInt = 0;
@@ -22,6 +23,7 @@ namespace Console_Game
                 {
                     playerChoiceConvertedToInt = ConvertStrToInt(playerChoice);
                     RecordPlayerHit(playerChoiceConvertedToInt);
+                    ChoiceToHit = playerChoiceConvertedToInt;
                     break;
                 }
                 else
@@ -29,13 +31,10 @@ namespace Console_Game
                     Console.WriteLine($"Вы ввели не существующий вариант, осталось попыток \"{(attempt - 1)}\"");
                     attempt--;
                     if (attempt > 0) continue;
+                    ChoiceToHit = 0;
                     break;
                 }
             }
-
-            if (attempt == 0) return 0;
-
-            return playerChoiceConvertedToInt;
 
             void ShowButtonToHit()
             {
@@ -61,15 +60,22 @@ namespace Console_Game
             return new Regex(@"\d").IsMatch(str);
         }
 
-        public bool IsValidString(string str)
+        private bool IsValidString(string str)
         {
-            if (str.Length > 1 || str.Length < 1)
+            if (str.Length != 1)
                 return false;
             if (!IsDigit(str))
                 return false;
-            if (str != "1" || str != "2" || str != "3")
+            if (str != "1" && str != "2" && str != "3")
                 return false;
+
             return true;
+        }
+
+        public void EnterUserName()
+        {
+            Console.Write("Введи свое имя рыцарь: ");
+            Name = Console.ReadLine();
         }
     }
 }
